@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { Link } from 'react-router'
+
 import NewTicketModal from '../components/NewTicketModal'
 import { getTickets } from '../services/ticketService'
 
@@ -131,9 +133,11 @@ function Tickets({ user }) {
     }
 
     function getShortId(id) {
-        return id
-            ?.toString()
-            .substring(0, 8) || '--------'
+        return (
+            id
+                ?.toString()
+                .substring(0, 8) || '--------'
+        )
     }
 
     return (
@@ -174,7 +178,9 @@ function Tickets({ user }) {
                             placeholder="Pesquisar por título, descrição ou ID..."
                             value={search}
                             onChange={(event) => {
-                                setSearch(event.target.value)
+                                setSearch(
+                                    event.target.value
+                                )
                             }}
                         />
                     </div>
@@ -183,7 +189,9 @@ function Tickets({ user }) {
                         <select
                             value={statusFilter}
                             onChange={(event) => {
-                                setStatusFilter(event.target.value)
+                                setStatusFilter(
+                                    event.target.value
+                                )
                             }}
                         >
                             <option value="ALL">
@@ -216,7 +224,9 @@ function Tickets({ user }) {
                         <select
                             value={priorityFilter}
                             onChange={(event) => {
-                                setPriorityFilter(event.target.value)
+                                setPriorityFilter(
+                                    event.target.value
+                                )
                             }}
                         >
                             <option value="ALL">
@@ -245,7 +255,9 @@ function Tickets({ user }) {
                         <select
                             value={categoryFilter}
                             onChange={(event) => {
-                                setCategoryFilter(event.target.value)
+                                setCategoryFilter(
+                                    event.target.value
+                                )
                             }}
                         >
                             <option value="ALL">
@@ -305,47 +317,66 @@ function Tickets({ user }) {
                                 </thead>
 
                                 <tbody>
-                                {filteredTickets.map((ticket) => (
-                                    <tr key={ticket.id}>
-                                        <td className="ticket-id">
-                                            #{getShortId(ticket.id)}
-                                        </td>
-
-                                        <td className="ticket-title">
-                                            {ticket.title}
-                                        </td>
-
-                                        <td className="ticket-category">
-                                            {getCategoryLabel(
-                                                ticket.category
-                                            )}
-                                        </td>
-
-                                        <td>
-                                                <span
-                                                    className={`ticket-status ${getStatusClass(
-                                                        ticket.status
-                                                    )}`}
+                                {filteredTickets.map(
+                                    (ticket) => (
+                                        <tr
+                                            key={ticket.id}
+                                        >
+                                            <td className="ticket-id">
+                                                <Link
+                                                    to={`/tickets/${ticket.id}`}
+                                                    className="ticket-id-link"
                                                 >
-                                                    {getStatusLabel(
-                                                        ticket.status
+                                                    #
+                                                    {getShortId(
+                                                        ticket.id
                                                     )}
-                                                </span>
-                                        </td>
+                                                </Link>
+                                            </td>
 
-                                        <td>
-                                                <span
-                                                    className={`ticket-priority priority ${getPriorityClass(
-                                                        ticket.priority
-                                                    )}`}
+                                            <td className="ticket-title">
+                                                <Link
+                                                    to={`/tickets/${ticket.id}`}
+                                                    className="ticket-title-link"
                                                 >
-                                                    {getPriorityLabel(
-                                                        ticket.priority
-                                                    )}
-                                                </span>
-                                        </td>
-                                    </tr>
-                                ))}
+                                                    {
+                                                        ticket.title
+                                                    }
+                                                </Link>
+                                            </td>
+
+                                            <td className="ticket-category">
+                                                {getCategoryLabel(
+                                                    ticket.category
+                                                )}
+                                            </td>
+
+                                            <td>
+                                                    <span
+                                                        className={`ticket-status ${getStatusClass(
+                                                            ticket.status
+                                                        )}`}
+                                                    >
+                                                        {getStatusLabel(
+                                                            ticket.status
+                                                        )}
+                                                    </span>
+                                            </td>
+
+                                            <td>
+                                                    <span
+                                                        className={`ticket-priority priority ${getPriorityClass(
+                                                            ticket.priority
+                                                        )}`}
+                                                    >
+                                                        {getPriorityLabel(
+                                                            ticket.priority
+                                                        )}
+                                                    </span>
+                                            </td>
+                                        </tr>
+                                    )
+                                )}
                                 </tbody>
                             </table>
                         )}
@@ -355,8 +386,12 @@ function Tickets({ user }) {
             {isModalOpen && (
                 <NewTicketModal
                     user={user}
-                    onClose={() => setIsModalOpen(false)}
-                    onCreated={handleTicketCreated}
+                    onClose={() =>
+                        setIsModalOpen(false)
+                    }
+                    onCreated={
+                        handleTicketCreated
+                    }
                 />
             )}
         </>

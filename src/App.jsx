@@ -1,4 +1,5 @@
 import { useState } from 'react'
+
 import {
     Navigate,
     Route,
@@ -13,6 +14,7 @@ import Header from './components/Header'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Tickets from './pages/Tickets'
+import TicketDetails from './pages/TicketDetails'
 import Notifications from './pages/Notifications'
 
 import {
@@ -35,12 +37,23 @@ function ProtectedLayout({ user, onLogout }) {
                 <Routes>
                     <Route
                         path="/dashboard"
-                        element={<Dashboard user={user} />}
+                        element={
+                            <Dashboard user={user} />
+                        }
                     />
 
                     <Route
                         path="/tickets"
-                        element={<Tickets user={user} />}
+                        element={
+                            <Tickets user={user} />
+                        }
+                    />
+
+                    <Route
+                        path="/tickets/:id"
+                        element={
+                            <TicketDetails />
+                        }
                     />
 
                     <Route

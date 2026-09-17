@@ -275,6 +275,28 @@
     color: #ff5579;
 }
 
+.ticket-id-link,
+.ticket-title-link {
+    color: inherit;
+
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.ticket-id-link {
+    color: #52647c;
+}
+
+.ticket-id-link:hover,
+.ticket-title-link:hover {
+    color: #00f0ff;
+}
+
+.ticket-title-link {
+    color: #e5edf8;
+}
+
 /* =========================================================
    RESPONSIVE
    ========================================================= */
