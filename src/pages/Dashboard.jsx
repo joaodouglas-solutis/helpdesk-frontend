@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
 
+import { Link } from 'react-router'
+
 import StatCard from '../components/StatCard'
 import TicketRow from '../components/TicketRow'
 import NewTicketModal from '../components/NewTicketModal'
 
 import { getTickets } from '../services/ticketService'
+
 
 function Dashboard({ user }) {
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -17,6 +20,7 @@ function Dashboard({ user }) {
 
     const userName =
         user?.name || user?.email || 'usuário'
+
 
     useEffect(() => {
         async function loadTickets() {
@@ -37,6 +41,7 @@ function Dashboard({ user }) {
         loadTickets()
     }, [])
 
+
     const totalTickets = tickets.length
 
     const openTickets = tickets.filter(
@@ -55,7 +60,9 @@ function Dashboard({ user }) {
         (ticket) => ticket.priority === 'CRITICAL'
     ).length
 
+
     const recentTickets = tickets.slice(0, 5)
+
 
     function handleTicketCreated(createdTicket) {
         setTickets((currentTickets) => [
@@ -64,9 +71,12 @@ function Dashboard({ user }) {
         ])
     }
 
+
     return (
         <section className="dashboard">
+
             <div className="welcome">
+
                 <p className="welcome-label">
                     SYSTEM OVERVIEW
                 </p>
@@ -78,9 +88,12 @@ function Dashboard({ user }) {
                 <p>
                     Monitoramento dos chamados e operações do sistema.
                 </p>
+
             </div>
 
+
             <div className="stats-grid">
+
                 <StatCard
                     title="Total de chamados"
                     value={totalTickets}
@@ -100,15 +113,26 @@ function Dashboard({ user }) {
                 />
 
                 <StatCard
-                    title="Críticos"
-                    value={criticalTickets}
-                    description={`${resolvedTickets} resolvidos`}
+                    title="Chamados resolvidos"
+                    value={resolvedTickets}
+                    description="Atendimento concluído"
                 />
+
+                <StatCard
+                    title="Chamados críticos"
+                    value={criticalTickets}
+                    description="Prioridade crítica"
+                />
+
             </div>
 
+
             <section className="tickets-section">
+
                 <div className="section-heading">
+
                     <div>
+
                         <p className="welcome-label">
                             ATENDIMENTO
                         </p>
@@ -116,16 +140,41 @@ function Dashboard({ user }) {
                         <h2>
                             Chamados recentes
                         </h2>
+
                     </div>
 
-                    <button
-                        type="button"
-                        className="primary-button"
-                        onClick={() => setIsModalOpen(true)}
+
+                    <div
+                        style={{
+                            display: 'flex',
+                            gap: '10px',
+                            alignItems: 'center',
+                        }}
                     >
-                        + Novo chamado
-                    </button>
+
+                        {user?.role === 'ADMIN' && (
+                            <Link
+                                to="/users"
+                                className="primary-button"
+                                title="Gerenciamento de usuários"
+                            >
+                                Gerenciamento de usuários
+                            </Link>
+                        )}
+
+
+                        <button
+                            type="button"
+                            className="primary-button"
+                            onClick={() => setIsModalOpen(true)}
+                        >
+                            + Novo chamado
+                        </button>
+
+                    </div>
+
                 </div>
+
 
                 {isLoading && (
                     <div className="ticket-state">
@@ -134,11 +183,13 @@ function Dashboard({ user }) {
                     </div>
                 )}
 
+
                 {!isLoading && error && (
                     <div className="ticket-state ticket-error">
                         {error}
                     </div>
                 )}
+
 
                 {!isLoading &&
                     !error &&
@@ -148,10 +199,12 @@ function Dashboard({ user }) {
                         </div>
                     )}
 
+
                 {!isLoading &&
                     !error &&
                     recentTickets.length > 0 && (
                         <div className="ticket-list">
+
                             {recentTickets.map((ticket) => (
                                 <TicketRow
                                     key={ticket.id}
@@ -160,9 +213,12 @@ function Dashboard({ user }) {
                                     priority={ticket.priority}
                                 />
                             ))}
+
                         </div>
                     )}
+
             </section>
+
 
             {isModalOpen && (
                 <NewTicketModal
@@ -171,8 +227,11 @@ function Dashboard({ user }) {
                     onCreated={handleTicketCreated}
                 />
             )}
+
         </section>
     )
 }
 
+
 export default Dashboard
+

@@ -2,7 +2,10 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { Link } from 'react-router'
 
-import { getNotifications } from '../services/notificationService'
+import {
+    clearNotifications,
+    getNotifications,
+} from '../services/notificationService'
 
 import './Notifications.css'
 
@@ -11,13 +14,18 @@ function Notifications() {
 
     const [isLoading, setIsLoading] = useState(true)
 
+    const [isClearing, setIsClearing] = useState(false)
+
     const [error, setError] = useState('')
+
+    const [success, setSuccess] = useState('')
 
     const loadNotifications = useCallback(
         async () => {
             try {
                 setIsLoading(true)
                 setError('')
+                setSuccess('')
 
                 const data = await getNotifications()
 
@@ -34,6 +42,38 @@ function Notifications() {
     useEffect(() => {
         loadNotifications()
     }, [loadNotifications])
+
+    async function handleClearNotifications() {
+        if (notifications.length === 0) {
+            return
+        }
+
+        const confirmed = window.confirm(
+            'Tem certeza que deseja limpar todas as notificações? Elas serão removidas da central, mas continuarão armazenadas no histórico.'
+        )
+
+        if (!confirmed) {
+            return
+        }
+
+        try {
+            setIsClearing(true)
+            setError('')
+            setSuccess('')
+
+            await clearNotifications()
+
+            setNotifications([])
+
+            setSuccess(
+                'Notificações limpas com sucesso.'
+            )
+        } catch (error) {
+            setError(error.message)
+        } finally {
+            setIsClearing(false)
+        }
+    }
 
     function formatDate(dateValue) {
         if (!dateValue) {
@@ -80,15 +120,47 @@ function Notifications() {
                     </p>
                 </div>
 
-                <button
-                    type="button"
-                    className="notifications-refresh"
-                    onClick={loadNotifications}
-                    disabled={isLoading}
-                >
-                    ↻ Atualizar
-                </button>
+                <div className="notifications-header-actions">
+                    <button
+                        type="button"
+                        className="notifications-clear"
+                        onClick={handleClearNotifications}
+                        disabled={
+                            isLoading ||
+                            isClearing ||
+                            notifications.length === 0
+                        }
+                    >
+                        {isClearing
+                            ? 'Limpando...'
+                            : '✕ Limpar notificações'}
+                    </button>
+
+                    <button
+                        type="button"
+                        className="notifications-refresh"
+                        onClick={loadNotifications}
+                        disabled={
+                            isLoading ||
+                            isClearing
+                        }
+                    >
+                        ↻ Atualizar
+                    </button>
+                </div>
             </div>
+
+            {success && (
+                <div className="notifications-success">
+                    {success}
+                </div>
+            )}
+
+            {error && (
+                <div className="notifications-error-banner">
+                    {error}
+                </div>
+            )}
 
             <section className="notifications-panel">
                 <div className="notifications-panel-header">
@@ -107,12 +179,6 @@ function Notifications() {
                             <span className="notifications-spinner"></span>
                             Carregando notificações...
                         </div>
-                    </div>
-                )}
-
-                {!isLoading && error && (
-                    <div className="notifications-state notifications-error">
-                        {error}
                     </div>
                 )}
 

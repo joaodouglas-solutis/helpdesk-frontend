@@ -1,39 +1,58 @@
 import { useState } from 'react'
 
+import {
+    Link,
+    useLocation,
+} from 'react-router'
+
 import apiFetch from '../services/api'
 import { setToken } from '../services/auth'
 
 import './Login.css'
 
 function Login({ onLogin }) {
+    const location = useLocation()
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
+    const [success, setSuccess] = useState(
+        location.state?.success || ''
+    )
 
     async function handleSubmit(event) {
         event.preventDefault()
 
         setError('')
+        setSuccess('')
 
         if (!email || !password) {
-            setError('Informe seu e-mail e sua senha.')
+            setError(
+                'Informe seu e-mail e sua senha.'
+            )
+
             return
         }
 
         setIsLoading(true)
 
         try {
-            const response = await apiFetch('/api/auth/login', {
-                method: 'POST',
-                body: JSON.stringify({
-                    email,
-                    password,
-                }),
-            })
+            const response = await apiFetch(
+                '/api/auth/login',
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        email,
+                        password,
+                    }),
+                }
+            )
 
             if (!response.ok) {
-                throw new Error('E-mail ou senha inválidos.')
+                throw new Error(
+                    'E-mail ou senha inválidos.'
+                )
             }
 
             const data = await response.json()
@@ -67,9 +86,13 @@ function Login({ onLogin }) {
                 </div>
 
                 <div className="login-heading">
-                    <p>SYSTEM // AUTHENTICATION</p>
+                    <p>
+                        SYSTEM // AUTHENTICATION
+                    </p>
 
-                    <h1>Acesso ao sistema</h1>
+                    <h1>
+                        Acesso ao sistema
+                    </h1>
 
                     <span>
                         Entre com suas credenciais para continuar.
@@ -91,8 +114,11 @@ function Login({ onLogin }) {
                             placeholder="seu@email.com"
                             value={email}
                             onChange={(event) => {
-                                setEmail(event.target.value)
+                                setEmail(
+                                    event.target.value
+                                )
                             }}
+                            autoComplete="email"
                         />
                     </div>
 
@@ -107,10 +133,19 @@ function Login({ onLogin }) {
                             placeholder="••••••••"
                             value={password}
                             onChange={(event) => {
-                                setPassword(event.target.value)
+                                setPassword(
+                                    event.target.value
+                                )
                             }}
+                            autoComplete="current-password"
                         />
                     </div>
+
+                    {success && (
+                        <div className="login-success">
+                            {success}
+                        </div>
+                    )}
 
                     {error && (
                         <div className="login-error">
@@ -129,9 +164,24 @@ function Login({ onLogin }) {
                     </button>
                 </form>
 
+                <div className="login-register-link">
+                    <span>
+                        Ainda não possui uma conta?
+                    </span>
+
+                    <Link to="/register">
+                        CRIAR CONTA
+                    </Link>
+                </div>
+
                 <div className="login-footer">
-                    <span>SECURE CONNECTION</span>
-                    <span>JWT // ACTIVE</span>
+                    <span>
+                        SECURE CONNECTION
+                    </span>
+
+                    <span>
+                        JWT // ACTIVE
+                    </span>
                 </div>
             </section>
         </main>

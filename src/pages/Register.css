@@ -1,4 +1,4 @@
-.login-page {
+.register-page {
     position: relative;
 
     min-height: 100vh;
@@ -25,7 +25,7 @@
     overflow: hidden;
 }
 
-.login-background {
+.register-background {
     position: absolute;
     inset: 0;
 
@@ -45,7 +45,7 @@
     background-size: 45px 45px;
 }
 
-.scan-line {
+.register-scan-line {
     position: absolute;
 
     top: 0;
@@ -61,10 +61,10 @@
 
     opacity: 0.5;
 
-    animation: scan 6s linear infinite;
+    animation: register-scan 6s linear infinite;
 }
 
-@keyframes scan {
+@keyframes register-scan {
     0% {
         top: 0;
     }
@@ -74,7 +74,7 @@
     }
 }
 
-.login-card {
+.register-card {
     position: relative;
 
     width: min(430px, 100%);
@@ -96,7 +96,7 @@
             0 30px 90px rgba(0, 0, 0, 0.65);
 }
 
-.login-card::before {
+.register-card::before {
     content: "";
 
     position: absolute;
@@ -113,7 +113,7 @@
             0 0 12px #00f0ff;
 }
 
-.login-card::after {
+.register-card::after {
     content: "";
 
     position: absolute;
@@ -130,16 +130,16 @@
             0 0 12px rgba(255, 43, 214, 0.7);
 }
 
-.login-logo {
+.register-logo {
     display: flex;
     align-items: center;
 
     gap: 12px;
 
-    margin-bottom: 38px;
+    margin-bottom: 34px;
 }
 
-.login-logo-mark {
+.register-logo-mark {
     width: 42px;
     height: 42px;
 
@@ -160,7 +160,7 @@
             0 0 15px rgba(0, 240, 255, 0.15);
 }
 
-.login-logo strong {
+.register-logo strong {
     display: block;
 
     color: #f1f7ff;
@@ -169,7 +169,7 @@
     letter-spacing: 2px;
 }
 
-.login-logo span {
+.register-logo span {
     display: block;
 
     margin-top: 4px;
@@ -180,7 +180,7 @@
     letter-spacing: 1.5px;
 }
 
-.login-heading p {
+.register-heading p {
     margin: 0;
 
     color: #00f0ff;
@@ -190,7 +190,7 @@
     letter-spacing: 2px;
 }
 
-.login-heading h1 {
+.register-heading h1 {
     margin: 9px 0 7px;
 
     color: #f2f7ff;
@@ -199,26 +199,26 @@
     font-weight: 500;
 }
 
-.login-heading span {
+.register-heading span {
     color: #637289;
 
     font-size: 12px;
 }
 
-.login-form {
-    margin-top: 30px;
+.register-form {
+    margin-top: 28px;
 }
 
-.login-form-group {
+.register-form-group {
     display: flex;
     flex-direction: column;
 
     gap: 7px;
 
-    margin-bottom: 18px;
+    margin-bottom: 16px;
 }
 
-.login-form-group label {
+.register-form-group label {
     color: #7d8ca3;
 
     font-size: 10px;
@@ -228,7 +228,7 @@
     text-transform: uppercase;
 }
 
-.login-form-group input {
+.register-form-group input {
     width: 100%;
 
     padding: 13px 14px;
@@ -250,47 +250,41 @@
             box-shadow 0.2s ease;
 }
 
-.login-form-group input::placeholder {
+.register-form-group input::placeholder {
     color: #43536a;
 }
 
-.login-form-group input:focus {
+.register-form-group input:focus {
     border-color: #00f0ff;
 
     box-shadow:
             0 0 14px rgba(0, 240, 255, 0.08);
 }
 
-.login-error,
-.login-success {
+.register-form-group small {
+    color: #46566d;
+
+    font-size: 9px;
+}
+
+.register-error {
     margin-bottom: 16px;
 
     padding: 11px 12px;
 
+    background: rgba(255, 56, 100, 0.06);
+
+    border: 1px solid rgba(255, 56, 100, 0.3);
     border-radius: 5px;
+
+    color: #ff6b86;
 
     font-size: 11px;
 
     line-height: 1.5;
 }
 
-.login-error {
-    background: rgba(255, 56, 100, 0.06);
-
-    border: 1px solid rgba(255, 56, 100, 0.3);
-
-    color: #ff6b86;
-}
-
-.login-success {
-    background: rgba(0, 240, 255, 0.05);
-
-    border: 1px solid rgba(0, 240, 255, 0.25);
-
-    color: #6fdce5;
-}
-
-.login-button {
+.register-button {
     width: 100%;
 
     padding: 13px 16px;
@@ -311,7 +305,7 @@
     transition: 0.2s ease;
 }
 
-.login-button:hover:not(:disabled) {
+.register-button:hover:not(:disabled) {
     background: #00f0ff;
 
     color: #071016;
@@ -320,17 +314,16 @@
             0 0 20px rgba(0, 240, 255, 0.3);
 }
 
-.login-button:disabled {
+.register-button:disabled {
     opacity: 0.5;
 
     cursor: not-allowed;
 }
 
-.login-register-link {
+.register-login-link {
     display: flex;
     align-items: center;
     justify-content: center;
-
     gap: 6px;
 
     margin-top: 22px;
@@ -340,7 +333,7 @@
     font-size: 9px;
 }
 
-.login-register-link a {
+.register-login-link a {
     color: #71849e;
 
     font-size: 9px;
@@ -351,15 +344,15 @@
     transition: color 0.2s ease;
 }
 
-.login-register-link a:hover {
+.register-login-link a:hover {
     color: #00f0ff;
 }
 
-.login-footer {
+.register-footer {
     display: flex;
     justify-content: space-between;
 
-    margin-top: 28px;
+    margin-top: 24px;
     padding-top: 16px;
 
     border-top: 1px solid #182639;
@@ -371,27 +364,25 @@
 }
 
 @media (max-width: 500px) {
-    .login-page {
+    .register-page {
         padding: 16px;
     }
 
-    .login-card {
+    .register-card {
         padding: 26px 22px;
     }
 
-    .login-register-link {
-        align-items: center;
-
+    .register-login-link {
         flex-direction: column;
 
         gap: 7px;
     }
 
-    .login-footer {
+    .register-footer {
         align-items: flex-start;
 
         flex-direction: column;
 
-        gap: 6px;
+        gap: 5px;
     }
 }

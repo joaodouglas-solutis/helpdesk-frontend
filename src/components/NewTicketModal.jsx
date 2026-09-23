@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { createTicket } from '../services/ticketService'
-import { getUsers } from '../services/userService'
+import { getClients } from '../services/userService'
 
 import './NewTicketModal.css'
 
@@ -10,18 +10,23 @@ function NewTicketModal({ user, onClose, onCreated }) {
     const [description, setDescription] = useState('')
     const [priority, setPriority] = useState('MEDIUM')
     const [category, setCategory] = useState('SOFTWARE')
+
     const [customerId, setCustomerId] = useState(
         user?.role === 'CLIENT' ? user.id : ''
     )
 
     const [clients, setClients] = useState([])
-    const [isLoadingClients, setIsLoadingClients] = useState(false)
 
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isLoadingClients, setIsLoadingClients] =
+        useState(false)
+
+    const [isSubmitting, setIsSubmitting] =
+        useState(false)
+
     const [error, setError] = useState('')
 
     useEffect(() => {
-        if (user?.role !== 'ADMIN') {
+        if (user?.role === 'CLIENT') {
             return
         }
 
@@ -30,13 +35,8 @@ function NewTicketModal({ user, onClose, onCreated }) {
                 setIsLoadingClients(true)
                 setError('')
 
-                const users = await getUsers()
-
-                const activeClients = users.filter(
-                    (currentUser) =>
-                        currentUser.role === 'CLIENT' &&
-                        currentUser.active
-                )
+                const activeClients =
+                    await getClients()
 
                 setClients(activeClients)
             } catch (error) {
@@ -75,30 +75,40 @@ function NewTicketModal({ user, onClose, onCreated }) {
         setError('')
 
         if (!title.trim()) {
-            setError('Informe o título do chamado.')
+            setError(
+                'Informe o título do chamado.'
+            )
+
             return
         }
 
         if (!description.trim()) {
-            setError('Informe a descrição do chamado.')
+            setError(
+                'Informe a descrição do chamado.'
+            )
+
             return
         }
 
         if (!customerId) {
-            setError('Selecione o cliente do chamado.')
+            setError(
+                'Selecione o cliente do chamado.'
+            )
+
             return
         }
 
         setIsSubmitting(true)
 
         try {
-            const createdTicket = await createTicket({
-                title: title.trim(),
-                description: description.trim(),
-                priority,
-                category,
-                customerId,
-            })
+            const createdTicket =
+                await createTicket({
+                    title: title.trim(),
+                    description: description.trim(),
+                    priority,
+                    category,
+                    customerId,
+                })
 
             onCreated(createdTicket)
 
@@ -139,7 +149,7 @@ function NewTicketModal({ user, onClose, onCreated }) {
                 </p>
 
                 <form onSubmit={handleSubmit}>
-                    {user?.role === 'ADMIN' && (
+                    {user?.role !== 'CLIENT' && (
                         <div className="form-group">
                             <label htmlFor="customerId">
                                 Cliente
@@ -160,14 +170,16 @@ function NewTicketModal({ user, onClose, onCreated }) {
                                         : 'Selecione um cliente'}
                                 </option>
 
-                                {clients.map((client) => (
-                                    <option
-                                        key={client.id}
-                                        value={client.id}
-                                    >
-                                        {client.name} • {client.email}
-                                    </option>
-                                ))}
+                                {clients.map(
+                                    (client) => (
+                                        <option
+                                            key={client.id}
+                                            value={client.id}
+                                        >
+                                            {client.name}
+                                        </option>
+                                    )
+                                )}
                             </select>
 
                             {isLoadingClients && (

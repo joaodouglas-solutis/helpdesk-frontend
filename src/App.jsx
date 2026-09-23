@@ -13,9 +13,11 @@ import Header from './components/Header'
 
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
+import Register from './pages/Register'
 import Tickets from './pages/Tickets'
 import TicketDetails from './pages/TicketDetails'
 import Notifications from './pages/Notifications'
+import Users from './pages/Users'
 
 import {
     getAuthenticatedUser,
@@ -64,6 +66,20 @@ function ProtectedLayout({ user, onLogout }) {
                     />
 
                     <Route
+                        path="/users"
+                        element={
+                            user?.role === 'ADMIN'
+                                ? <Users user={user} />
+                                : (
+                                    <Navigate
+                                        to="/dashboard"
+                                        replace
+                                    />
+                                )
+                        }
+                    />
+
+                    <Route
                         path="*"
                         element={
                             <Navigate
@@ -107,7 +123,16 @@ function App() {
                 <Route
                     path="/login"
                     element={
-                        <Login onLogin={handleLogin} />
+                        <Login
+                            onLogin={handleLogin}
+                        />
+                    }
+                />
+
+                <Route
+                    path="/register"
+                    element={
+                        <Register />
                     }
                 />
 
